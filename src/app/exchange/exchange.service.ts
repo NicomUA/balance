@@ -60,6 +60,8 @@ export class ExchangeService {
   // convert money to specified currency
   async convert(target: string, amount: number, base = 'USD'): Promise<number> {
     const rate = await this.getRate(target, base);
+    if (!rate) throw new BadRequestException('Bad currency code');
+
     return Utils.round(amount * rate);
   }
 }
