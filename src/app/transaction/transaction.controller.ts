@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Param,
   Post,
   UseInterceptors,
@@ -43,6 +44,8 @@ export class TransactionsController {
   @Get('/:id')
   async getOne(@Param('id') id: string): Promise<Transaction> {
     const transaction = await this.service.getOne(id);
+    if (!transaction) throw new NotFoundException('Transaction not found');
+
     return this.service.calculateFee(transaction);
   }
 
